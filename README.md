@@ -1,4 +1,27 @@
-## Star Wars API
+# Desafio Star Wars 
+Nossos associados são aficionados por Star Wars e com isso, queremos criar um jogo com 
+algumas informações da franquia. Para possibilitar a equipe de front criar essa aplicação, 
+queremos desenvolver uma API que contenha os dados dos planetas de Star Wars. 
+## Requisitos: 
+• A API deve ser REST 
+• A API deverá salvar os seguintes dados em um banco de dados: 
+o Nome 
+o Clima 
+o Terreno 
+• Para cada planeta também devemos ter a quantidade de aparições em filmes. Para isso 
+você poderá buscar o planeta com a ajuda da API publica de informações de Star Wars. 
+## Consulta: https://swapi.dev/api/planets/?search={nome_do_planeta}. 
+## Exemplo:  https://swapi.dev/api/planets/?search=Tatooine 
+Nessa consulta são retornadas várias informações, inclusive os filmes, dentro do objeto 
+‘films’, em que o planeta consultado aparece (caso exista). 
+## Funcionalidades desejadas: 
+• Adicionar um planeta (com nome, clima e terreno) 
+• Listar planetas 
+• Buscar por nome 
+• Buscar por ID 
+• Remover planeta 
+
+# Star Wars API
 
 ## ♦ Descrição:
 A Star Wars API é uma aplicação RESTful desenvolvida com Java 17 e Spring Boot 3. Esta API permite gerenciar informações sobre planetas do universo Star Wars, incluindo nome, clima, terreno e a quantidade de aparições em filmes. As informações sobre as aparições em filmes são obtidas da API pública do Star Wars (SWAPI).
