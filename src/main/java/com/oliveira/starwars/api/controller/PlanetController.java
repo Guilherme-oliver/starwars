@@ -20,33 +20,41 @@ public class PlanetController {
         this.service = service;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<PlanetResponse> findById(@PathVariable Long id) {
-        PlanetResponse dto = service.findById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    @GetMapping(value = "/{findByName}/find-by-name")
-    public ResponseEntity<PlanetResponse> findByName(@PathVariable String name) {
-        PlanetResponse dto = service.searchByName(name);
-        return ResponseEntity.ok(dto);
+    @PostMapping
+    public ResponseEntity<PlanetResponse> insert(@Valid @RequestBody PlanetRequest request) {
+        PlanetResponse dto = service.insert(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
     @GetMapping
-    public ResponseEntity<List<PlanetResponse>> findByName() {
+    public ResponseEntity<List<PlanetResponse>> listPlanets() {
         List<PlanetResponse> dto = service.searchAll();
         return ResponseEntity.ok(dto);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PlanetResponse> findById(@PathVariable Long id) {
+        PlanetResponse dto = service.findById(id);
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/{findByName}/findByName")
+    public ResponseEntity<PlanetResponse> findByName(@PathVariable String name) {
+        PlanetResponse dto = service.searchByName(name);
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping
-    public ResponseEntity<PlanetResponse> insert(@Valid @RequestBody PlanetRequest request) {
-        var dto = service.insert(request);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }

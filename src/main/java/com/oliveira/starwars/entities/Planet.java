@@ -23,6 +23,7 @@ public class Planet {
     private String name;
     private String climate;
     private String terrain;
+    private int quantityAppearancesInFilms;
 
     @ManyToMany
     @JoinTable(name = "tb_planet_film",

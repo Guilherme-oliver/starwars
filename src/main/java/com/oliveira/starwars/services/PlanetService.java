@@ -2,14 +2,11 @@ package com.oliveira.starwars.services;
 
 import com.oliveira.starwars.api.request.PlanetRequest;
 import com.oliveira.starwars.api.response.PlanetResponse;
-import com.oliveira.starwars.entities.Film;
 import com.oliveira.starwars.entities.Planet;
 import com.oliveira.starwars.repositories.PlanetRepository;
 import com.oliveira.starwars.services.exceptions.DatabaseException;
 import com.oliveira.starwars.services.exceptions.ResourceNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,8 +18,11 @@ public class PlanetService {
 
     private PlanetRepository planetRepository;
 
-    public PlanetService(PlanetRepository planetRepository) {
+    private SwapiService swapiService;
+
+    public PlanetService(PlanetRepository planetRepository, SwapiService swapiService) {
         this.planetRepository = planetRepository;
+        this.swapiService = swapiService;
     }
 
     public PlanetResponse findById(Long id) {
@@ -48,15 +48,18 @@ public class PlanetService {
         entity.setTerrain(request.terrain());
     }
 
-    public PlanetResponse insert(PlanetRequest planetRequest) {
-        try {
-            Planet planet = new Planet();
-            copyDtoToEntity(planetRequest, planet);
-            planet = planetRepository.save(planet);
-            return new PlanetResponse(planet);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    @Transactional(propagation = Propagation.REQUIRED)
+    public PlanetResponse insert(PlanetRequest request) {
+        Planet entity = new Planet();
+        copyDtoToEntity(request, entity);
+        PlanetResponse planetDto = swapiService.getPlanetByName(entity.getName());
+        if (planetDto != null) {
+            entity.setClimate(planetDto.getClimate());
+            entity.setTerrain(planetDto.getTerrain());
+            entity.setQuantityAppearancesInFilms(planetDto.getFilms().size());
         }
+        Planet savedPlanet = planetRepository.save(entity);
+        return new PlanetResponse(savedPlanet);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)

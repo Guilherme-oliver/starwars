@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface PlanetRepository extends JpaRepository<Planet, Long> {
+    @Query("SELECT ob FROM Planet ob WHERE UPPER(ob.name) LIKE UPPER(CONCAT('%', :name, '%'))")
     Optional<Planet> searchByName(String name);
 
     @Query(value = "SELECT obj FROM Planet obj JOIN FETCH obj.films")

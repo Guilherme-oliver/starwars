@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: loans
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db-star-wars
+    username: postgres
+    password: 123456
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+swapi:
+  base:
+    url: https://swapi.dev/api/

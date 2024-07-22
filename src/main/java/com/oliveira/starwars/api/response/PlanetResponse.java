@@ -17,12 +17,13 @@ public class PlanetResponse {
     private String climate;
     private String terrain;
     private Set<Film> films;
-
+    private int quantityAppearancesInFilms;
 
     public PlanetResponse(Planet planet) {
         name = planet.getName();
         climate = planet.getClimate();
         terrain = planet.getTerrain();
         films = planet.getFilms();
+        quantityAppearancesInFilms = planet.getQuantityAppearancesInFilms();
     }
 }
