@@ -2,6 +2,7 @@ package com.oliveira.starwars.services;
 
 import com.oliveira.starwars.api.request.PlanetRequest;
 import com.oliveira.starwars.api.response.PlanetResponse;
+import com.oliveira.starwars.entities.Film;
 import com.oliveira.starwars.entities.Planet;
 import com.oliveira.starwars.repositories.PlanetRepository;
 import com.oliveira.starwars.services.exceptions.DatabaseException;
@@ -12,6 +13,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PlanetService {
@@ -57,6 +60,10 @@ public class PlanetService {
             entity.setClimate(planetDto.getClimate());
             entity.setTerrain(planetDto.getTerrain());
             entity.setQuantityAppearancesInFilms(planetDto.getFilms().size());
+            Set<Film> films = planetDto.getFilms().stream()
+                    .map(title -> new Film(null, title, null, null))
+                    .collect(Collectors.toSet());
+            entity.setFilms(films);
         }
         Planet savedPlanet = planetRepository.save(entity);
         return new PlanetResponse(savedPlanet);

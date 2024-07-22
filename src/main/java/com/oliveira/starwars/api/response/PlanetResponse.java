@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -16,14 +17,14 @@ public class PlanetResponse {
     private String name;
     private String climate;
     private String terrain;
-    private Set<Film> films;
+    private Set<String> films;
     private int quantityAppearancesInFilms;
 
     public PlanetResponse(Planet planet) {
         name = planet.getName();
         climate = planet.getClimate();
         terrain = planet.getTerrain();
-        films = planet.getFilms();
+        films = planet.getFilms().stream().map(Film::getTitle).collect(Collectors.toSet());
         quantityAppearancesInFilms = planet.getQuantityAppearancesInFilms();
     }
 }
